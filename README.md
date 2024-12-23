@@ -1,1 +1,1 @@
-# book_logger
+# video_game_logger
