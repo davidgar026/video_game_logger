@@ -19,6 +19,7 @@ app.post("/", async (req, res) => {
 */
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
 
@@ -35,7 +36,7 @@ const getAccessToken = async () => {
             {
                 params: {
                     client_id: 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    client_secret: 'bkn6uhxfso0zbsu119p7x0ugf3p9nn',
+                    client_secret: 'v6pyswcvnm519qqoy3z2s7b0ghz02i',
                     grant_type: 'client_credentials'
                 }
             })
@@ -47,7 +48,7 @@ const getAccessToken = async () => {
 
 
 app.post("/get-games", async (req, res) => {
-    const getToken = getAccessToken();
+    const getToken = await getAccessToken();
 
     if (!getToken) {
         return res.status(500).send('Unable to fetch access token.');
@@ -55,11 +56,11 @@ app.post("/get-games", async (req, res) => {
 
     try {
         const response = await axios.post('https://api.igdb.com/v4/games',
-            'fields name, genres.name, platforms.name, rating; limit 10;',
+            "fields name,rating, total_rating; where first_release_date > 1704088800 & first_release_date < 1735061958 & total_rating_count >= 20; sort total_rating desc;",
             {
                 headers: {
                     'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    Authorization: 'Bearer 8xyzvu4tihr79a3hzz64wv6kwbmfhm'
+                    Authorization: `Bearer ${getToken}`                
                 }
             }
         );
