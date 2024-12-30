@@ -60,12 +60,28 @@ app.post("/get-games", async (req, res) => {
             {
                 headers: {
                     'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    Authorization: `Bearer ${getToken}`                
+                    Authorization: `Bearer ${getToken}`
                 }
             }
         );
+
         console.log(response.data)
-        res.json(response.data);
+        const searchString = 'Animal Company';
+
+        // Check if the search string is contained in any of the values
+
+        
+        Object.values(response.data).forEach(el => {
+            console.log("el = ", el);
+            if (el.name == searchString) {
+                res.render("results.ejs", {
+                    gameName: el.name,
+                });
+            }
+        })
+
+
+
     } catch (error) {
         console.error('Error fetching data from IGDB:', error.response?.data || error.message);
         res.status(500).send('Error fetching data from IGDB.');
