@@ -1,5 +1,9 @@
-<%- include("header.ejs") %>
+<%- include("header.ejs") %> <% const acc = 0;%>
 
-<%= locals.gameName %>
+<select class="form-select" multiple aria-label="Multiple select example">
+  <% gameOptions.forEach(el => {%>
+  <option value="`${acc++}`"><%= el %></option>
+  <%})%>
+</select>
 
 <%- include("footer.ejs") %>

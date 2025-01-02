@@ -6,26 +6,24 @@ import bodyParser from "body-parser";
 const port = 3000;
 const app = express();
 
-/*
-app.post("/", async (req, res) => {
-    try{
-        await axios.post("URL", body, config);
-        res.sendStatus(201);
-    }catch(error){
-        res.status(404).send(error.response.data);
-    }
-});
-
-*/
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-
     res.render("index.ejs");
 })
 
+app.get("my-games", (req,res) => {
+    res.render("my-games.ejs");
+})
+
+app.get("/log-a-game", (req,res) => {
+    res.render("log-a-game.ejs");
+})
+
+app.get("game-news", (req,res) => {
+    res.render("game-news.ejs");
+})
 
 
 const getAccessToken = async () => {
@@ -49,6 +47,8 @@ const getAccessToken = async () => {
 
 app.post("/get-games", async (req, res) => {
     const getToken = await getAccessToken();
+    const gameName = req.body.gameName;
+    const retrievedGames = [];
 
     if (!getToken) {
         return res.status(500).send('Unable to fetch access token.');
@@ -56,7 +56,7 @@ app.post("/get-games", async (req, res) => {
 
     try {
         const response = await axios.post('https://api.igdb.com/v4/games',
-            "fields name,rating, total_rating; where first_release_date > 1704088800 & first_release_date < 1735061958 & total_rating_count >= 20; sort total_rating desc;",
+            `fields name,rating, total_rating; search "${gameName}";`,
             {
                 headers: {
                     'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
@@ -65,94 +65,26 @@ app.post("/get-games", async (req, res) => {
             }
         );
 
-        console.log(response.data)
-        const searchString = 'Animal Company';
+        const data = response.data;
 
-        // Check if the search string is contained in any of the values
+        console.log("Number of entries: ", data.length, ", Data: ", data)
 
-        
-        Object.values(response.data).forEach(el => {
-            console.log("el = ", el);
-            if (el.name == searchString) {
-                res.render("results.ejs", {
-                    gameName: el.name,
-                });
-            }
+
+        data.forEach(el => {
+            retrievedGames.push(el.name);
         })
 
-
+        res.render("results.ejs", {
+            gameOptions: retrievedGames,
+        })
+        
+        
 
     } catch (error) {
         console.error('Error fetching data from IGDB:', error.response?.data || error.message);
         res.status(500).send('Error fetching data from IGDB.');
     }
 });
-
-
-
-
-
-
-
-/*   
-
-
-
-const getToken = async () => {
-    try {
-        const response = await axios.post("https://id.twitch.tv/oauth2/token",
-            null,
-            {
-                params: {
-                    client_id: 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    client_secret: 'bkn6uhxfso0zbsu119p7x0ugf3p9nn',
-                    grant_type: 'client_credentials'
-
-                }
-            }
-        );
-        console.log("Here is your token: ", response.data.access_token)
-        return response.data.access_token;
-    } catch (error) {
-
-    }
-
-};
-
-const accessAPI = async () => {
-    const token = await getToken();
-
-    try {
-        const response = await axios.post("https://api.igdb.com/v4/games",
-            "fields name,rating, total_rating; where first_release_date > 1704088800 & first_release_date < 1735061958 & total_rating_count >= 20; sort total_rating desc;",
-            {
-                headers: {
-                    'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-        console.log(response.data)
-        return response.data
-    }catch(error){
-
-    }
-}
-
-const getData = accessAPI();
-
-console.log(getData)
-
-
-
-
-*/
-
-
-
-
-
-
 
 
 

@@ -4,37 +4,105 @@
   margin: 0;
 }
 
-body {
-  border: 3px solid yellow;
+.grid-container {
   display: grid;
-  grid-template-rows: 100px 1fr 90px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas: 
+    "header header header header header header header header header header header header"
+    "main main main main main main main main main main main main"
+    "footer footer footer footer footer footer footer footer footer footer footer footer";
   height: 100vh;
 }
 
-#header,
-#footer {
-  border: 3px solid red;
-}
-
-#header {
+header {
+  grid-row: 1; /* Place in the first row */
+  grid-column: 1 / -1; /* Span all columns */
+  grid-area: header;
   position: sticky;
   top: 0;
 }
 
-#footer {
+main {
+  display: grid;
+  grid-area: main;
+  grid-template-columns: repeat(12, 1fr); /* Defines 12 equal columns */
+  padding: 0; /* Ensure no padding affects layout */
+  margin: 0; /* Remove any default margin */
+  gap: 0; /* Ensure no gaps between columns */
+}
+
+.userForm {
+  grid-column: 2 / 6; /* Form spans columns 1 to 4 */
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  gap: 10px; /* Space between form elements */
+  background-color: white; /* Example: Form background color */
+  padding: 20px; /* Optional padding for the form */
+  border-radius: 5px; /* Optional rounded corners */
+}
+
+
+
+.userForm .btn{
+  width:30%;
+}
+
+#row3{
+  display:flex;
+  justify-content:center;
+}
+
+#row3 > label{
+  width:140px;
+}
+
+
+
+
+#row4{
+  display:flex;
+  justify-content:center;
+}
+
+
+footer {
+  grid-row:3;
+  grid-area: footer;
   position: sticky;
+  bottom:0;
 }
 
-#form {
 
-  border: 4px solid green;
+
+
+.rating {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row-reverse; /* this is the magic */
+  justify-content: center;
 }
 
-main{
-  display:grid;
-  grid-template-columns:500px auto;
-  border:1px solid red;
-  padding:100px;
+.rating input {
+  display: none;
 }
+
+.rating label {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.rating label:hover,
+.rating label:hover ~ label { /* reason why the stars are in reverse order in the html */
+  color: orange;
+}
+
+.rating input:checked ~ label {
+  color: orange;
+}
+
+
+
 
 

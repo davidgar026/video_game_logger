@@ -1,0 +1,58 @@
+<%- include("header.ejs") %>
+
+<main>
+  <form class="userForm" method="post">
+    <div id="row1" class="row mb-3">
+      <label for="inputName" class="col-sm-5 col-form-label">Name:</label>
+      <div class="col-sm-12">
+        <input
+          type="text"
+          class="form-control"
+          name="gameName"
+          id="inputName"
+        />
+      </div>
+    </div>
+    <div id="row2" class="row mb-3">
+      <label for="inputReview" class="col-sm-5 col-form-label"
+        >Review:</label
+      >
+      <div class="form-floating">
+        <textarea
+          class="form-control"
+          placeholder="Leave a comment here"
+          id="floatingTextarea2"
+          style="height: 100px"
+        ></textarea>
+      </div>
+    </div>
+    <div id="row3" class="row mb-3">
+      <label for="rating" class="col-sm-5 col-form-label"
+        >Rate this game:</label
+      >
+      <div class="rating">
+        <!-- Notice that the stars are in reverse order -->
+        <input type="radio" id="star5" name="rating" value="5" />
+        <label for="star5">&#9733;</label>
+        <input type="radio" id="star4" name="rating" value="4" />
+        <label for="star4">&#9733;</label>
+        <input type="radio" id="star3" name="rating" value="3" />
+        <label for="star3">&#9733;</label>
+        <input type="radio" id="star2" name="rating" value="2" />
+        <label for="star2">&#9733;</label>
+        <input type="radio" id="star1" name="rating" value="1" />
+        <label for="star1">&#9733;</label>
+      </div>
+    </div>
+    <div id="row4" class="row mb-3">
+    <input
+      type="submit"
+      class="btn btn-primary"
+      value="SUBMIT"
+      formaction="/get-games"
+    />
+    </div>
+  </form>
+</main>
+
+<%- include("footer.ejs") %>
