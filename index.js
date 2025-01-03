@@ -1,10 +1,19 @@
 import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
-
+import pg from "pg";
 
 const port = 3000;
 const app = express();
+
+const db = new pg.Client({
+    username:"postgres",
+    host: "localhost",
+    database: "video_game_logger",
+    password: "pimpin",
+    port: 5432,
+});
+db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -13,7 +22,7 @@ app.get("/", (req, res) => {
     res.render("index.ejs");
 })
 
-app.get("my-games", (req,res) => {
+app.get("/my-games", (req,res) => {
     res.render("my-games.ejs");
 })
 
@@ -21,7 +30,7 @@ app.get("/log-a-game", (req,res) => {
     res.render("log-a-game.ejs");
 })
 
-app.get("game-news", (req,res) => {
+app.get("/game-news", (req,res) => {
     res.render("game-news.ejs");
 })
 
