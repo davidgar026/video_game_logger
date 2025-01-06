@@ -21,6 +21,7 @@ header {
   grid-area: header;
   position: sticky;
   top: 0;
+  font-size:30px;
 }
 
 main {
@@ -32,6 +33,8 @@ main {
   gap: 0; /* Ensure no gaps between columns */
 }
 
+/*form------------------------------------------------------------------*/
+
 .userForm {
   grid-column: 2 / 6; /* Form spans columns 1 to 4 */
   display: flex;
@@ -41,13 +44,25 @@ main {
   background-color: white; /* Example: Form background color */
   padding: 20px; /* Optional padding for the form */
   border-radius: 5px; /* Optional rounded corners */
+  font-size:33px;
 }
 
 
 
 .userForm .btn{
-  width:30%;
+  width:100px;
 }
+
+
+
+
+
+#row0 > label,
+#row1 > label,
+#row2 > label{
+  width:100%;
+}
+
 
 #row3{
   display:flex;
@@ -55,9 +70,9 @@ main {
 }
 
 #row3 > label{
-  width:140px;
+  text-align:center;
+  width:400px;
 }
-
 
 
 
@@ -66,16 +81,19 @@ main {
   justify-content:center;
 }
 
+/*end -------------------------------------------------------------------------*/
+
 
 footer {
   grid-row:3;
   grid-area: footer;
   position: sticky;
   bottom:0;
+  font-size:11px;
 }
 
 
-
+/*rating*/
 
 .rating {
   margin-bottom: 20px;
@@ -89,7 +107,7 @@ footer {
 }
 
 .rating label {
-  font-size: 24px;
+  font-size: 32px;
   cursor: pointer;
 }
 
@@ -103,6 +121,95 @@ footer {
 }
 
 
+/* end <---------------------------------------->*/
 
 
 
+
+
+/*media query----------------------------------------------------------------*/
+
+/* Extra small devices (phones, 320px and up) */
+@media (max-width: 479px) {
+  /* Styles for small phones */
+}
+
+/* Small devices (phones, 480px to 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  /* Styles for larger phones */
+}
+
+/* Medium devices (tablets, 768px to 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Styles for tablets */
+  
+}
+
+/* Large devices (desktops, 1024px to 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  /* Styles for small desktops */
+
+  
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 2637px) {
+  /* Styles for large desktops */
+
+  .userForm {
+    grid-column: 6 / 8; /* Form spans columns 1 to 4 */
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    gap: 10px; /* Space between form elements */
+    background-color: white; /* Example: Form background color */
+    padding: 20px; /* Optional padding for the form */
+    border-radius: 5px; /* Optional rounded corners */
+  }
+
+}
+
+
+/*end----------------------------------------------------------------------*/
+
+
+/*fonts---------------------------------------------------*/
+
+
+
+.quicksand {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  font-weight: 524;
+  font-style: normal;
+}
+
+
+/*---------------------------------------------------------*/
+
+#h1_home{
+    grid-column: 4 / 10; /* Form spans columns 1 to 4 */
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    gap: 10px; /* Space between form elements */
+    background-color: white; /* Example: Form background color */
+    padding: 20px; /* Optional padding for the form */
+    border-radius: 5px; /* Optional rounded corners */
+}
+
+#h1_home > h1{
+  font-size:100px;
+}
+
+#btn_home{
+  aspect-ratio: 1 / 1;
+  width: 100%; /* Fills the container */
+  max-width: 154px; /* Maximum size */
+  min-width: 100px;  /* Minimum size */
+  border-radius: 50%;
+  background-color: orange;
+  border:3px solid black;
+  color:black;
+  font-size:21px;
+}

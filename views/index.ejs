@@ -1,6 +1,51 @@
 <%- include("header.ejs") %>
 
 <main>
+    <form id="h1_home" method="get">
+        <h1 
+            class="quicksand">Welcome to your game collection!
+        </h1>
+        <button
+    id="btn_home"
+    type="submit"
+    class="quicksand"
+    aria-label="Press to log a game"
+    style="background: none; border: none; cursor: pointer; padding: 0;"
+  >
+    <svg width="200" height="200" viewBox="0 0 200 200">
+      <!-- Outer Circle -->
+      <circle cx="100" cy="100" r="90" fill="#F2AE66" stroke="#FF9D23" />
+      
+      <!-- Path for Text -->
+      <path
+        id="innerCirclePath"
+        d="M 100, 100 m 80, 0 a 80,80 0 1,0 -160,0 a 80,80 0 1,0 160,0"
+        fill="none"
+        stroke="none"
+      />
+      
+      <!-- Text Along the Path -->
+      <text font-size="45" fill="black" dominant-baseline="middle">
+        <textPath href="#innerCirclePath" startOffset="75%" text-anchor="middle">
+          PRESS
+        </textPath>
+      </text>
+    </svg>
+  </button>
+        </form>
+    
+
+          
+          
+          
+          
+          
+          
+     
+          
+
+
+
 </main>
 
 <%- include("footer.ejs") %>

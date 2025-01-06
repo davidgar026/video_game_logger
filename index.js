@@ -7,13 +7,16 @@ const port = 3000;
 const app = express();
 
 const db = new pg.Client({
-    username:"postgres",
+    user: "postgres",
     host: "localhost",
-    database: "video_game_logger",
+    database: "postgres",
     password: "pimpin",
     port: 5432,
 });
+
+
 db.connect();
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -94,6 +97,7 @@ app.post("/get-games", async (req, res) => {
         res.status(500).send('Error fetching data from IGDB.');
     }
 });
+
 
 
 
