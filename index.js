@@ -37,6 +37,9 @@ app.get("/game-news", (req,res) => {
     res.render("game-news.ejs");
 })
 
+app.get("/signup", (req,res) => {
+    res.render("signup.ejs");
+})
 
 const getAccessToken = async () => {
     try {

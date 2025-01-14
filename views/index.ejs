@@ -1,21 +1,19 @@
-<%- include("header.ejs") %>
+<%- include("header1.ejs") %>
 
 <main>
-    <form id="h1_home" method="get">
-        <h1 
-            class="quicksand">Welcome to your game collection!
-        </h1>
-        <button
-    id="btn_home"
+  <h1 id="home_h1" class="quicksand">Welcome to your game collection!</h1>
+
+  <button
+    id="openModal"
     type="submit"
     class="quicksand"
     aria-label="Press to log a game"
-    style="background: none; border: none; cursor: pointer; padding: 0;"
+    style="background: none; border: none; cursor: pointer; padding: 0"
   >
     <svg width="200" height="200" viewBox="0 0 200 200">
       <!-- Outer Circle -->
       <circle cx="100" cy="100" r="90" fill="#F2AE66" stroke="#FF9D23" />
-      
+
       <!-- Path for Text -->
       <path
         id="innerCirclePath"
@@ -23,29 +21,160 @@
         fill="none"
         stroke="none"
       />
-      
+
       <!-- Text Along the Path -->
       <text font-size="45" fill="black" dominant-baseline="middle">
-        <textPath href="#innerCirclePath" startOffset="75%" text-anchor="middle">
+        <textPath
+          href="#innerCirclePath"
+          startOffset="75%"
+          text-anchor="middle"
+        >
           PRESS
         </textPath>
       </text>
     </svg>
   </button>
-        </form>
-    
 
-          
-          
-          
-          
-          
-          
-     
-          
+  <!-- Modal 1 -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <form id="modalForm">
+        <h2>Welcome to GameLogger!</h2>
+        <p>
+          Track your gaming journey and organize your favorite games with ease.
+          Let’s get started!
+        </p>
 
+        <!-- Step 1: Sign Up or Log In -->
+        <div class="step">
+          <h3>1. Sign Up or Log In</h3>
+          <p>
+            Click the <strong>"Sign Up"</strong> button to create an account or
+            log in if you already have one.
+          </p>
+        </div>
 
+        <!-- Step 2: Set Up Your Profile -->
+        <div class="step">
+          <h3>2. Set Up Your Profile</h3>
+          <p>
+            Once logged in, head over to <strong>"My Games"</strong> from the
+            header. Add your first game by clicking the
+            <strong>"Log a Game"</strong> button.
+          </p>
+        </div>
 
+        <!-- Step 3: Log a Game -->
+        <div class="step">
+          <h3>3. Log a Game</h3>
+          <p>
+            Enter the game’s title, the date you started or completed it, and
+            your personal notes or ratings. Save your entry to add it to your
+            collection.
+          </p>
+        </div>
+
+        <!-- Step 4: Explore Your Collection -->
+        <div class="step">
+          <h3>4. Explore Your Collection</h3>
+          <p>
+            View all your logged games in <strong>"My Games."</strong> Sort or
+            filter games by title, rating, or date for a quick overview.
+          </p>
+        </div>
+
+        <!-- Step 5: Keep Gaming -->
+        <div class="step">
+          <h3>5. Keep Gaming</h3>
+          <p>
+            Continue logging your games, track your progress, and share your
+            favorite moments with friends.
+          </p>
+        </div>
+
+        <!-- Toggle Modal -->
+        <div class="form-footer">
+          <button
+            type="button"
+            onclick="openModal('modal3')"
+            class="btn btn-primary"
+          >
+            Log In
+          </button>
+          <button
+            type="button"
+            onclick="openModal('modal2')"
+            class="btn btn-primary"
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2-->
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <span id="closeModal2" class="close" onclick="closeModal('modal2')"
+        >&times;</span
+      >
+      <h2>Fill Out the Form</h2>
+      <form id="modalForm2" class="userForm" method="post">
+        <!--<form class="signupForm"  action="/signup" method="POST"> -->
+        <div id="row0" class="row mb-3">
+          <label for="inputName" class="col-sm-5 col-form-label"
+            >Username:</label
+          >
+          <div class="col-sm-12">
+            <input
+              type="text"
+              class="form-control"
+              name="userName"
+              id="inputUserName"
+            />
+          </div>
+        </div>
+        <div id="row1" class="row mb-3">
+          <label for="inputPassword" class="col-sm-5 col-form-label"
+            >Password:</label
+          >
+          <div class="col-sm-12">
+            <input
+              type="text"
+              class="form-control"
+              name="userPassword"
+              id="inputPassword"
+            />
+          </div>
+        </div>
+        <div id="row4" class="row mb-3">
+          <input type="submit" class="btn btn-primary" value="SUBMIT" />
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3-->
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <span id="closeModal3" class="close" onclick="closeModal('modal3')"
+        >&times;</span
+      >
+      <h2>Create Your Account:</h2>
+      <form id="modalForm3" class="userForm" method="post">
+        <div id="row0_modal3" class="row mb-3">
+          <label for="username" class="form-label">Username:</label>
+          <input type="text" class="form-control" />
+        </div>
+        <div id="row1_modal3" class="row mb-3">
+          <label for="password" class="form-label">Password:</label>
+          <input type="password" class="form-control" />
+        </div>
+      </form>
+    </div>
+  </div>
 </main>
 
 <%- include("footer.ejs") %>

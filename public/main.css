@@ -8,7 +8,7 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-areas: 
+  grid-template-areas:
     "header header header header header header header header header header header header"
     "main main main main main main main main main main main main"
     "footer footer footer footer footer footer footer footer footer footer footer footer";
@@ -21,7 +21,7 @@ header {
   grid-area: header;
   position: sticky;
   top: 0;
-  font-size:30px;
+  font-size: 30px;
 }
 
 main {
@@ -39,59 +39,64 @@ main {
   grid-column: 2 / 6; /* Form spans columns 1 to 4 */
   display: flex;
   flex-direction: column;
-  justify-content:center;
+  justify-content: center;
   gap: 10px; /* Space between form elements */
   background-color: white; /* Example: Form background color */
   padding: 20px; /* Optional padding for the form */
   border-radius: 5px; /* Optional rounded corners */
-  font-size:33px;
+  font-size: 33px;
+}
+.signupForm {
+  grid-column: 2 / 6; /* Form spans columns 1 to 4 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px; /* Space between form elements */
+  background-color: white; /* Example: Form background color */
+  padding: 20px; /* Optional padding for the form */
+  border-radius: 5px; /* Optional rounded corners */
+  font-size: 33px;
 }
 
-
-
-.userForm .btn{
-  width:100px;
+.userForm .btn,
+.signupForm .btn {
+  width: 100px;
 }
 
-
-
-
+.signupForm #row0 > label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 
 #row0 > label,
 #row1 > label,
-#row2 > label{
-  width:100%;
+#row2 > label {
+  width: 100%;
 }
 
-
-#row3{
-  display:flex;
-  justify-content:center;
+#row3 {
+  display: flex;
+  justify-content: center;
 }
 
-#row3 > label{
-  text-align:center;
-  width:400px;
+#row3 > label {
+  text-align: center;
+  width: 400px;
 }
 
-
-
-#row4{
-  display:flex;
-  justify-content:center;
+#row4 {
+  display: flex;
+  justify-content: center;
 }
-
-/*end -------------------------------------------------------------------------*/
-
 
 footer {
-  grid-row:3;
+  grid-row: 3;
   grid-area: footer;
   position: sticky;
-  bottom:0;
-  font-size:11px;
+  bottom: 0;
+  font-size: 11px;
 }
-
 
 /*rating*/
 
@@ -112,20 +117,14 @@ footer {
 }
 
 .rating label:hover,
-.rating label:hover ~ label { /* reason why the stars are in reverse order in the html */
+.rating label:hover ~ label {
+  /* reason why the stars are in reverse order in the html */
   color: orange;
 }
 
 .rating input:checked ~ label {
   color: orange;
 }
-
-
-/* end <---------------------------------------->*/
-
-
-
-
 
 /*media query----------------------------------------------------------------*/
 
@@ -142,14 +141,11 @@ footer {
 /* Medium devices (tablets, 768px to 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   /* Styles for tablets */
-  
 }
 
 /* Large devices (desktops, 1024px to 1279px) */
 @media (min-width: 1024px) and (max-width: 1279px) {
   /* Styles for small desktops */
-
-  
 }
 
 /* Extra large devices (large desktops, 1280px and up) */
@@ -160,22 +156,15 @@ footer {
     grid-column: 6 / 8; /* Form spans columns 1 to 4 */
     display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     gap: 10px; /* Space between form elements */
     background-color: white; /* Example: Form background color */
     padding: 20px; /* Optional padding for the form */
     border-radius: 5px; /* Optional rounded corners */
   }
-
 }
 
-
-/*end----------------------------------------------------------------------*/
-
-
 /*fonts---------------------------------------------------*/
-
-
 
 .quicksand {
   font-family: "Quicksand", serif;
@@ -184,32 +173,132 @@ footer {
   font-style: normal;
 }
 
-
-/*---------------------------------------------------------*/
-
-#h1_home{
-    grid-column: 4 / 10; /* Form spans columns 1 to 4 */
-    display: flex;
-    justify-content:center;
-    align-items:center;
-    gap: 10px; /* Space between form elements */
-    background-color: white; /* Example: Form background color */
-    padding: 20px; /* Optional padding for the form */
-    border-radius: 5px; /* Optional rounded corners */
+main h1 {
+  grid-column: 5 / 8;
+  font-size: 100px;
 }
 
-#h1_home > h1{
-  font-size:100px;
-}
-
-#btn_home{
+#btn_home {
   aspect-ratio: 1 / 1;
   width: 100%; /* Fills the container */
   max-width: 154px; /* Maximum size */
-  min-width: 100px;  /* Minimum size */
+  min-width: 100px; /* Minimum size */
   border-radius: 50%;
   background-color: orange;
-  border:3px solid black;
-  color:black;
-  font-size:21px;
+  border: 3px solid black;
+  color: black;
+  font-size: 21px;
+}
+
+#home_h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal */
+
+#modalForm {
+  grid-column: 4 / 8; /* Form spans columns 1 to 4 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px; /* Space between form elements */
+  background-color: white; /* Example: Form background color */
+  padding: 30px; /* Optional padding for the form */
+  border-radius: 5px; /* Optional rounded corners */
+}
+
+#modalForm2 {
+  place-items: center;
+  grid-column: 4 / 10; /* Form spans columns 1 to 4 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Space between form elements */
+  background-color: white; /* Example: Form background color */
+  padding: 30px; /* Optional padding for the form */
+  border-radius: 5px; /* Optional rounded corners */
+}
+
+#openModal {
+  grid-column: 8 / 9;
+  align-self: center;
+  aspect-ratio: 1 / 1;
+  width: 100%; /* Fills the container */
+  max-width: 154px; /* Maximum size */
+  min-width: 100px; /* Minimum size */
+  border-radius: 50%;
+  background-color: orange;
+  border: 3px solid black;
+  color: black;
+  font-size: 21px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 45px 40px 30px 50px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 550px;
+  width: 100%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+#modal .modal-content .form-footer > button{
+ width:150px;
+}
+
+#modal .modal-content .form-footer {
+  padding-top:20px;
+  display:flex;
+  justify-content:space-around;
+}
+
+
+
+#modal3 .modal-content > h2{
+  font-size:20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+#modal3  #row0_modal3 label, #row1_modal3 label{
+  font-size:15px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+#modal2 .modal-content > h2{
+  font-size:20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+#modal2 #row0 > label,#row1 > label{
+  font-size:15px;
+  display: flex;
+  justify-content: flex-start;
 }
