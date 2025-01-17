@@ -35,7 +35,7 @@
     </svg>
   </button>
 
-  <!-- Modal 1 -->
+  <!-- Modal 1: Welcome Modal -->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span id="closeModal" class="close">&times;</span>
@@ -114,14 +114,14 @@
     </div>
   </div>
 
-  <!-- Modal 2-->
+  <!-- Modal 2: Sign Up page-->
   <div id="modal2" class="modal">
     <div class="modal-content">
       <span id="closeModal2" class="close" onclick="closeModal('modal2')"
         >&times;</span
       >
-      <h2>Fill Out the Form</h2>
-      <form id="modalForm2" class="userForm" method="post">
+      <h2>Create Your Account:</h2>
+      <form id="modalForm2" class="userForm" action="/add" method="post">
         <!--<form class="signupForm"  action="/signup" method="POST"> -->
         <div id="row0" class="row mb-3">
           <label for="inputName" class="col-sm-5 col-form-label"
@@ -131,7 +131,7 @@
             <input
               type="text"
               class="form-control"
-              name="userName"
+              name="username"
               id="inputUserName"
             />
           </div>
@@ -142,9 +142,9 @@
           >
           <div class="col-sm-12">
             <input
-              type="text"
+              type="password"
               class="form-control"
-              name="userPassword"
+              name="password"
               id="inputPassword"
             />
           </div>
@@ -156,21 +156,24 @@
     </div>
   </div>
 
-  <!-- Modal 3-->
+  <!-- Modal 3: Log In Page -->
   <div id="modal3" class="modal">
     <div class="modal-content">
       <span id="closeModal3" class="close" onclick="closeModal('modal3')"
         >&times;</span
       >
-      <h2>Create Your Account:</h2>
-      <form id="modalForm3" class="userForm" method="post">
+      <h2>You're Back!</h2>
+      <form id="modalForm3" name="modalForm3" class="userForm" action="/log-in" method="POST">
         <div id="row0_modal3" class="row mb-3">
           <label for="username" class="form-label">Username:</label>
-          <input type="text" class="form-control" />
+          <input type="text" name="username" class="form-control" />
         </div>
         <div id="row1_modal3" class="row mb-3">
           <label for="password" class="form-label">Password:</label>
-          <input type="password" class="form-control" />
+          <input type="password" name="password" class="form-control" />
+        </div>
+        <div id="row2_modal3" class="row mb-3">
+          <input type="submit" class="btn btn-primary" value="SUBMIT" />
         </div>
       </form>
     </div>

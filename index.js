@@ -9,7 +9,7 @@ const app = express();
 const db = new pg.Client({
     user: "postgres",
     host: "localhost",
-    database: "postgres",
+    database: "video_game_logger",
     password: "pimpin",
     port: 5432,
 });
@@ -20,6 +20,11 @@ db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+const getAllUsers = async () => {
+    const result = await db.query("SELECT * FROM users");
+    console.log( "user = ", result.rows[0]['username'])
+}
 
 app.get("/", (req, res) => {
     res.render("index.ejs");
@@ -58,6 +63,36 @@ const getAccessToken = async () => {
         console.error("Error fetching token: ", error.response?.data || error.message);
     }
 }
+
+
+app.post("/add", async (req,res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    try{
+        await db.query("INSERT INTO users (username,password) VALUES ($1,$2)", [username,password]);
+        res.redirect('/')
+    }catch(err){
+        console.log(err)
+    }
+
+})
+/*THIS IS WHERE YOU LEFTED OFF. YOU MADE A APP.POST TO RETRIEVE THE USER'S CREDENTIALS FROM index.ejs file. Next, youd like to make sure that whatever profile the user enters, it will log them into their file and display that in the header. (On the top far right if possible but if not, you can do that later) */
+app.post("/log-in", async (req,res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    console.log("typed in username = ", username);
+    const result = await db.query("SELECT username FROM users");
+
+    try{
+        console.log(result.rows[0]['username']);
+        getAllUsers();
+        res.render('my-games.ejs', {
+            user: result.rows[0]['username']
+        });
+    }catch(err){
+        console.log(err);
+    }
+})
 
 
 app.post("/get-games", async (req, res) => {
