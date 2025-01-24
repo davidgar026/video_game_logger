@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add click event listeners to open modals
     modalButtons.forEach(button => {
         button.addEventListener('click', () => {
+
+            document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
+            
             const modalId = button.getAttribute('data-modal-id');
             openModal(modalId);
         });
