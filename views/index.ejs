@@ -7,6 +7,7 @@
     id="openModal"
     type="submit"
     class="quicksand"
+    data-modal-id="modal"
     aria-label="Press to log a game"
     style="background: none; border: none; cursor: pointer; padding: 0"
   >
@@ -38,7 +39,7 @@
   <!-- Modal 1: Welcome Modal -->
   <div id="modal" class="modal">
     <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
+      <span id="closeModal" class="close" data-close-modal="modal">&times;</span>
       <form id="modalForm">
         <h2>Welcome to GameLogger!</h2>
         <p>
@@ -97,14 +98,14 @@
         <div class="form-footer">
           <button
             type="button"
-            onclick="openModal('modal3')"
+            data-modal-id="modal3"
             class="btn btn-primary"
           >
             Log In
           </button>
           <button
             type="button"
-            onclick="openModal('modal2')"
+            data-modal-id="modal2"
             class="btn btn-primary"
           >
             Sign Up
@@ -117,7 +118,7 @@
   <!-- Modal 2: Sign Up page-->
   <div id="modal2" class="modal">
     <div class="modal-content">
-      <span id="closeModal2" class="close" onclick="closeModal('modal2')"
+      <span id="closeModal2" class="close" data-close-modal="modal2"
         >&times;</span
       >
       <h2>Create Your Account:</h2>
@@ -159,7 +160,7 @@
   <!-- Modal 3: Log In Page -->
   <div id="modal3" class="modal">
     <div class="modal-content">
-      <span id="closeModal3" class="close" onclick="closeModal('modal3')"
+      <span id="closeModal3" class="close" data-close-modal="modal3"
         >&times;</span
       >
       <h2>You're Back!</h2>
@@ -175,9 +176,14 @@
         <div id="row2_modal3" class="row mb-3">
           <input type="submit" class="btn btn-primary" value="SUBMIT" />
         </div>
+        <div id="error-message">
+    
+        </div>
       </form>
     </div>
   </div>
-</main>
+  </main>
+
+ 
 
 <%- include("footer.ejs") %>

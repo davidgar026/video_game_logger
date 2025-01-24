@@ -20,16 +20,15 @@ html {
 }
 
 header {
-  grid-row: 1; /* Place in the first row */
-  grid-column: 1 / -1; /* Span all columns */
+  display: flex;
   grid-area: header;
-  position: sticky;
+  position: sticky;          
   top: 0;
   font-size: 30px;
+  text-align: left;
+  height: 60px; /* Set a fixed height */
+  align-items: center; /* Center content vertically */
 }
-
-
-
 
 main {
   display: grid;
@@ -105,6 +104,33 @@ footer {
   font-size: 11px;
 }
 
+.welcome-section {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  place-items:center;
+  justify-content:center;
+  border:1px solid red;
+  grid-column: 1 / -1; /* Form spans columns 1 to 4 */
+  text-align: center;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.welcome-section h1 {
+  margin: 0 0 20px;
+  font-size: 2.5rem;
+  color: #333333;
+}
+
+.welcome-section p {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #666666;
+  line-height: 1.6;
+}
  
 
 
@@ -307,7 +333,7 @@ main h1 {
 
 /* Small devices (phones, 480px to 767px) */
 @media (min-width: 480px) and (max-width: 767px) {
-  #modal {
+  body{
     border: 3px solid green;
   }
 
@@ -330,7 +356,7 @@ main h1 {
 
 /* Medium devices (tablets, 768px to 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
-  #modal {
+  body{
     border: 4px solid orange;
   }
 
@@ -353,6 +379,10 @@ main h1 {
 
 /* Large devices (desktops, 1024px to 1279px) */
 @media (min-width: 1024px) and (max-width: 1279px) {
+  body{
+    border: 4px solid pink;
+  }
+
   .modal-content {
     max-width: 600px;
   }
@@ -374,7 +404,7 @@ main h1 {
 @media (min-width: 1280px) {
 
 
-  #modal .modal-content {
+  body{
     border: 3px solid blue;
   }
 
