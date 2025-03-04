@@ -16,7 +16,13 @@ html {
     "header header header header header header header header header header header header"
     "main main main main main main main main main main main main"
     "footer footer footer footer footer footer footer footer footer footer footer footer";
-  height: 100vh;
+  height: 100%;
+}
+
+body{
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height:100vh;
 }
 
 header {
@@ -24,6 +30,7 @@ header {
   grid-area: header;
   position: sticky;          
   top: 0;
+  background:white;
   font-size: 30px;
   text-align: left;
   height: 60px; /* Set a fixed height */
@@ -33,47 +40,28 @@ header {
 main {
   display: grid;
   grid-area: main;
-  grid-template-columns: repeat(12, 1fr); /* Defines 12 equal columns */
+  grid-template-columns: 100%; /* Defines 12 equal columns */
   padding: 0; /* Ensure no padding affects layout */
   margin: 0; /* Remove any default margin */
   gap: 0; /* Ensure no gaps between columns */
 }
 
+main h1 {
+  grid-column: 4 / 10;
+  text-align:center;
+}
+
+footer {
+  grid-row: 3;
+  grid-area: footer;
+  font-size: 11px;
+  border:5px solid lightblue;
+}
+
+
+
+
 /*form------------------------------------------------------------------*/
-
-.userForm {
-  grid-column: 2 / 6; /* Form spans columns 1 to 4 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px; /* Space between form elements */
-  background-color: white; /* Example: Form background color */
-  padding: 20px; /* Optional padding for the form */
-  border-radius: 5px; /* Optional rounded corners */
-  font-size: 33px;
-}
-.signupForm {
-  grid-column: 2 / 6; /* Form spans columns 1 to 4 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px; /* Space between form elements */
-  background-color: white; /* Example: Form background color */
-  padding: 20px; /* Optional padding for the form */
-  border-radius: 5px; /* Optional rounded corners */
-  font-size: 33px;
-}
-
-.userForm .btn,
-.signupForm .btn {
-  width: 100px;
-}
-
-.signupForm #row0 > label {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
 
 #row0 > label,
 #row1 > label,
@@ -96,45 +84,6 @@ main {
   justify-content: center;
 }
 
-footer {
-  grid-row: 3;
-  grid-area: footer;
-  position: sticky;
-  bottom: 0;
-  font-size: 11px;
-}
-
-.welcome-section {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  place-items:center;
-  justify-content:center;
-  border:1px solid red;
-  grid-column: 1 / -1; /* Form spans columns 1 to 4 */
-  text-align: center;
-  padding: 20px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-.welcome-section h1 {
-  margin: 0 0 20px;
-  font-size: 2.5rem;
-  color: #333333;
-}
-
-.welcome-section p {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #666666;
-  line-height: 1.6;
-}
- 
-
-
-
 
 /*rating*/
 
@@ -150,7 +99,7 @@ footer {
 }
 
 .rating label {
-  font-size: 32px;
+  font-size: 26px;
   cursor: pointer;
 }
 
@@ -173,24 +122,9 @@ footer {
   font-style: normal;
 }
 
-main h1 {
-  grid-column: 5 / 8;
-  font-size: 100px;
-}
 
-#btn_home {
-  aspect-ratio: 1 / 1;
-  width: 100%; /* Fills the container */
-  max-width: 154px; /* Maximum size */
-  min-width: 100px; /* Minimum size */
-  border-radius: 50%;
-  background-color: orange;
-  border: 3px solid black;
-  color: black;
-  font-size: 21px;
-}
-
-#home_h1 {
+#welcome_text {
+  font-size:3.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,16 +143,9 @@ main h1 {
   border-radius: 5px; /* Optional rounded corners */
 }
 
-#modalForm2 {
-  place-items: center;
-  grid-column: 4 / 10; /* Form spans columns 1 to 4 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* Space between form elements */
-  background-color: white; /* Example: Form background color */
-  padding: 30px; /* Optional padding for the form */
-  border-radius: 5px; /* Optional rounded corners */
+#modalForm #gameInput{
+  width:100%;
+  
 }
 
 #openModal {
@@ -269,10 +196,7 @@ main h1 {
   width: 150px;
 }
 
-#row2_modal3{
-  display:flex;
-  justify-content:center;
-}
+
 
 #modal .modal-content .form-footer {
   padding-top: 20px;
@@ -280,31 +204,7 @@ main h1 {
   justify-content: space-around;
 }
 
-#modal3 .modal-content > h2 {
-  font-size: 20px;
-  display: flex;
-  justify-content: center;
-}
 
-#modal3 #row0_modal3 label,
-#row1_modal3 label {
-  font-size: 15px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-#modal2 .modal-content > h2 {
-  font-size: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-#modal2 #row0 > label,
-#row1 > label {
-  font-size: 15px;
-  display: flex;
-  justify-content: flex-start;
-}
 
 /*media query----------------------------------------------------------------*/
 /* Extra small devices (phones, 320px and up) */
@@ -404,10 +304,6 @@ main h1 {
 @media (min-width: 1280px) {
 
 
-  body{
-    border: 3px solid blue;
-  }
-
   .modal-content {
     max-width: 600px;
   }
@@ -424,3 +320,105 @@ main h1 {
     font-size: 1.5rem;
   }
 }
+
+
+
+.autocomplete-list{
+  padding:unset;
+  margin:unset;
+  
+}
+
+#autocompleteResults {
+  padding:unset;
+  margin:unset;
+}
+
+.autocomplete-item {
+  padding: 4px;
+  cursor: pointer;
+  border:1px solid #ccc;
+  border-top:unset;
+  text-align:left;
+  display:flex;
+  justify-content:space-evenly;
+}
+
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* Game Cards */
+
+#games-container {
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:30px;
+}
+
+#game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: #f4f4f4;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  
+}
+
+#game-card #game-review{
+  height: 200px; /* Set a fixed height */
+  width:200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: center; /* Ensures content starts at the top */
+  justify-content: center; /* Aligns content to the top */
+}
+
+#game-card img {
+  width: 100px;
+  height: auto;
+  object-fit:cover;
+  border-radius: 5px;
+}
+
+#game-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+#actionBtns{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-evenly;
+  width: 100%;
+}
+
+.actionBtns{
+  width:9rem;
+  border-radius:8px;
+  padding:3px;
+  font-size:12px;
+  opacity:40%;
+}
+
+.actionBtns:hover{
+  opacity:unset;
+}
+
+#game-review{
+  border:1px solid black;
+  width:100%;
+  height:100%;
+  padding:50px;
+  margin:auto;
+  margin-bottom:20px;
+}
+

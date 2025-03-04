@@ -1,189 +1,282 @@
-<%- include("header1.ejs") %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="main.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Video Game Logger</title>
+  </head>
+  <body>
+    <div class="grid-container">
+      <%- include("header.ejs") %>
+      <main>
+        <% if(!locals.games) {%>
+        <h1 id="welcome_text" class="quicksand">
+          Welcome David.<br /><br />You have no games logged yet.
+        </h1>
 
-<main>
-  <h1 id="home_h1" class="quicksand">Welcome to your game collection!</h1>
+        <!-- Log a Game Modal -->
+        <div id="modal" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <span
+                id="closeModal"
+                onclick="document.getElementById('modal-dialog').style.display = 'none';"
+                class="close"
+                data-bs-dismiss="modal"
+                >&times;</span
+              >
+              <form id="modalForm" method="post" autocomplete="off">
+                <div id="row1" class="row mb-3">
+                  <label class="col-sm-5 col-form-label">Game Name:</label>
+                  <input
+                    type="text"
+                    id="gameInput"
+                    name="gameName"
+                    class="autocomplete-list"
+                    placeholder="Search for a game..."
+                    autocomplete="off"
+                  />
+                  <input
+                    type="hidden"
+                    id="gameUrl"
+                    name="gameUrl"
+                    autocomplete="off"
+                  />
+                  <div id="autocompleteResults"></div>
+                </div>
 
-  <button
-    id="openModal"
-    type="submit"
-    class="quicksand"
-    data-modal-id="modal"
-    aria-label="Press to log a game"
-    style="background: none; border: none; cursor: pointer; padding: 0"
-  >
-    <svg width="200" height="200" viewBox="0 0 200 200">
-      <!-- Outer Circle -->
-      <circle cx="100" cy="100" r="90" fill="#F2AE66" stroke="#FF9D23" />
-
-      <!-- Path for Text -->
-      <path
-        id="innerCirclePath"
-        d="M 100, 100 m 80, 0 a 80,80 0 1,0 -160,0 a 80,80 0 1,0 160,0"
-        fill="none"
-        stroke="none"
-      />
-
-      <!-- Text Along the Path -->
-      <text font-size="45" fill="black" dominant-baseline="middle">
-        <textPath
-          href="#innerCirclePath"
-          startOffset="75%"
-          text-anchor="middle"
-        >
-          PRESS
-        </textPath>
-      </text>
-    </svg>
-  </button>
-
-  <!-- Modal 1: Welcome Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span id="closeModal" class="close" data-close-modal="modal">&times;</span>
-      <form id="modalForm">
-        <h2>Welcome to GameLogger!</h2>
-        <p>
-          Track your gaming journey and organize your favorite games with ease.
-          Let’s get started!
-        </p>
-
-        <!-- Step 1: Sign Up or Log In -->
-        <div class="step">
-          <h3>1. Sign Up or Log In</h3>
-          <p>
-            Click the <strong>"Sign Up"</strong> button to create an account or
-            log in if you already have one.
-          </p>
-        </div>
-
-        <!-- Step 2: Set Up Your Profile -->
-        <div class="step">
-          <h3>2. Set Up Your Profile</h3>
-          <p>
-            Once logged in, head over to <strong>"My Games"</strong> from the
-            header. Add your first game by clicking the
-            <strong>"Log a Game"</strong> button.
-          </p>
-        </div>
-
-        <!-- Step 3: Log a Game -->
-        <div class="step">
-          <h3>3. Log a Game</h3>
-          <p>
-            Enter the game’s title, the date you started or completed it, and
-            your personal notes or ratings. Save your entry to add it to your
-            collection.
-          </p>
-        </div>
-
-        <!-- Step 4: Explore Your Collection -->
-        <div class="step">
-          <h3>4. Explore Your Collection</h3>
-          <p>
-            View all your logged games in <strong>"My Games."</strong> Sort or
-            filter games by title, rating, or date for a quick overview.
-          </p>
-        </div>
-
-        <!-- Step 5: Keep Gaming -->
-        <div class="step">
-          <h3>5. Keep Gaming</h3>
-          <p>
-            Continue logging your games, track your progress, and share your
-            favorite moments with friends.
-          </p>
-        </div>
-
-        <!-- Toggle Modal -->
-        <div class="form-footer">
-          <button
-            type="button"
-            data-modal-id="modal3"
-            class="btn btn-primary"
-          >
-            Log In
-          </button>
-          <button
-            type="button"
-            data-modal-id="modal2"
-            class="btn btn-primary"
-          >
-            Sign Up
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal 2: Sign Up page-->
-  <div id="modal2" class="modal">
-    <div class="modal-content">
-      <span id="closeModal2" class="close" data-close-modal="modal2"
-        >&times;</span
-      >
-      <h2>Create Your Account:</h2>
-      <form id="modalForm2" class="userForm" action="/add" method="post">
-        <!--<form class="signupForm"  action="/signup" method="POST"> -->
-        <div id="row0" class="row mb-3">
-          <label for="inputName" class="col-sm-5 col-form-label"
-            >Username:</label
-          >
-          <div class="col-sm-12">
-            <input
-              type="text"
-              class="form-control"
-              name="username"
-              id="inputUserName"
-            />
+                <div id="row2" class="row mb-3">
+                  <label for="inputReview" class="col-sm-5 col-form-label"
+                    >Review:</label
+                  >
+                  <textarea
+                    class="form-control"
+                    name="textReview"
+                    placeholder="Leave a comment here"
+                    id="floatingTextarea2"
+                    style="height: 100px"
+                  ></textarea>
+                </div>
+                <div id="row3" class="row mb-3">
+                  <label for="rating" class="col-sm-5 col-form-label"
+                    >Rate this game:</label
+                  >
+                  <div class="rating">
+                    <!-- Notice that the stars are in reverse order -->
+                    <input type="radio" id="star5" name="rating" value="5" />
+                    <label for="star5">&#9733;</label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4">&#9733;</label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3">&#9733;</label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2">&#9733;</label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1">&#9733;</label>
+                  </div>
+                </div>
+                <div id="row4" class="row mb-3">
+                  <input
+                    type="submit"
+                    class="btn btn-primary"
+                    value="SUBMIT"
+                    formaction="/add"
+                  />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <div id="row1" class="row mb-3">
-          <label for="inputPassword" class="col-sm-5 col-form-label"
-            >Password:</label
+        <% }else{ %>
+        <!-- if there's no games logged, perform the code block below -->
+
+        <div id="games-container">
+          <!-- Game Entries -->
+          <% games.forEach( game => { %>
+          <a
+            data-bs-id="<%= game.id %>"
+            data-bs-rating="<%= game.rating %>"
+            data-bs-review="<%= game.review_text %>"
+            data-bs-toggle="modal"
+            data-bs-target="#viewGameModal"
           >
-          <div class="col-sm-12">
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              id="inputPassword"
-            />
+            <div id="game-card">
+              <img
+                id="<%= game.id %>"
+                src="<%= game.game_cover %>"
+                alt="<%= game.game_name %>"
+              />
+              <p id="game-title"><%= game.game_name %></p>
+            </div>
+          </a>
+
+          <!-- View a Game w/ Action Btns-->
+          <div id="viewGameModal" class="modal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <span
+                  id="closeModal"
+                  onclick="document.getElementById('modal-dialog').style.display = 'none';"
+                  class="close"
+                  data-bs-dismiss="modal"
+                  >&times;
+                </span>
+
+                <!-- display game's review -->
+                <div id="game-review"></div>
+
+                <!-- textarea input not visible initially -->
+                <textarea
+                  id="edit-game-review"
+                  class="form-control"
+                  style="display: none"
+                ></textarea>
+
+                <!-- action buttons -->
+                <div id="actionBtns">
+
+                  <!-- edit button -->
+                  <button class="actionBtns" id="editBtn">Edit</button>
+
+                  <!-- save button -->
+                  <!-- save button isnt visible initally-->
+                  <button class="actionBtns" id="saveBtn" style="display: none">
+                    Save
+                  </button>
+
+                  <!-- cancel button -->
+                   <!-- cancel button isnt visible initially  -->
+                  <button
+                    class="actionBtns"
+                    id="cancelBtn"
+                    style="display: none"
+                  >
+                    Cancel
+                  </button>
+
+                  <!-- delete button -->
+                  <form action="/delete" method="POST" id="deleteGameRevEntry">
+                    <button type="submit" class="actionBtns" id="deleteBtn">
+                      Delete
+                    </button>
+                    <input type="hidden" id="editItem" name="editItem" />
+                  <input type="hidden" id="gameId" name="gameId" />
+                  </form>
+
+                </div> <!--end of #actionBtns -->
+
+                <!-- edit button -->
+                 <!-- sends edited data to the backend -->
+                <form action="/edit" method="POST" id="editForm">
+                  <input type="hidden" id="editItem" name="editItem" />
+                  <input type="hidden" id="gameId" name="gameId" />
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+          <% });%>
+        </div>
+
+        <!-- Log a Game Modal -->
+        <div id="modal" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <span
+                id="closeModal"
+                onclick="document.getElementById('modal-dialog').style.display = 'none';"
+                class="close"
+                data-bs-dismiss="modal"
+                >&times;</span
+              >
+              <form id="modalForm" method="post" autocomplete="off">
+                <div id="row1" class="row mb-3">
+                  <label class="col-sm-5 col-form-label">Game Name:</label>
+                  <input
+                    type="text"
+                    id="gameInput"
+                    name="gameName"
+                    class="autocomplete-list"
+                    placeholder="Search for a game..."
+                    autocomplete="off"
+                  />
+                  <input
+                    type="hidden"
+                    id="gameUrl"
+                    name="gameUrl"
+                    autocomplete="off"
+                  />
+                  <div id="autocompleteResults"></div>
+                </div>
+
+                <div id="row2" class="row mb-3">
+                  <label for="inputReview" class="col-sm-5 col-form-label"
+                    >Review:</label
+                  >
+                  <textarea
+                    class="form-control"
+                    name="textReview"
+                    placeholder="Leave a comment here"
+                    id="floatingTextarea2"
+                    style="height: 100px"
+                  ></textarea>
+                </div>
+                <div id="row3" class="row mb-3">
+                  <label for="rating" class="col-sm-5 col-form-label"
+                    >Rate this game:</label
+                  >
+                  <div class="rating">
+                    <!-- Notice that the stars are in reverse order -->
+                    <input type="radio" id="star5" name="rating" value="5" />
+                    <label for="star5">&#9733;</label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4">&#9733;</label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3">&#9733;</label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2">&#9733;</label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1">&#9733;</label>
+                  </div>
+                </div>
+                <div id="row4" class="row mb-3">
+                  <input
+                    type="submit"
+                    class="btn btn-primary"
+                    value="SUBMIT"
+                    formaction="/add"
+                  />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <div id="row4" class="row mb-3">
-          <input type="submit" class="btn btn-primary" value="SUBMIT" />
-        </div>
-      </form>
+
+        <% } %>
+      </main>
+      <%- include("footer.ejs") %>
     </div>
-  </div>
 
-  <!-- Modal 3: Log In Page -->
-  <div id="modal3" class="modal">
-    <div class="modal-content">
-      <span id="closeModal3" class="close" data-close-modal="modal3"
-        >&times;</span
-      >
-      <h2>You're Back!</h2>
-      <form id="modalForm3" name="modalForm3" class="userForm" action="/log-in" method="POST">
-        <div id="row0_modal3" class="row mb-3">
-          <label for="username" class="form-label">Username:</label>
-          <input type="text" name="username" class="form-control" />
-        </div>
-        <div id="row1_modal3" class="row mb-3">
-          <label for="password" class="form-label">Password:</label>
-          <input type="password" name="password" class="form-control" />
-        </div>
-        <div id="row2_modal3" class="row mb-3">
-          <input type="submit" class="btn btn-primary" value="SUBMIT" />
-        </div>
-        <div id="error-message">
-    
-        </div>
-      </form>
-    </div>
-  </div>
-  </main>
-
- 
-
-<%- include("footer.ejs") %>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/script.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -3,10 +3,11 @@ import axios from "axios";
 import bodyParser from "body-parser";
 import pg from "pg";
 import path from 'path';
+import fetch from "node-fetch"; // Make sure you have `node-fetch` installed
+
 const port = 3000;
 const app = express();
-let username;
-let password;
+
 const db = new pg.Client({
     user: "postgres",
     host: "localhost",
@@ -18,41 +19,81 @@ const db = new pg.Client({
 db.connect();
 
 app.use(express.json());
-app.use(express.static(path.join('C:/Web Development Projects/Backend/video_game_logger', 'public')));
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"));
 
 
-const getAllUsers = async () => {
-    const result = await db.query("SELECT * FROM users");
-    console.log("user = ", result.rows[0]['username'])
+
+async function loggedGames() {
+    const result = await db.query("SELECT * FROM video_game_reviews");
+    const games = result.rows;
+    let gamesLogged = [];
+    games.forEach((game) => {
+        gamesLogged.push(game);
+    })
+    return gamesLogged;
 }
-app.get("/", (req, res) => {
-    res.render("index.ejs");
+
+
+app.get("/", async (req, res) => {
+    const currentGamesLogged = await loggedGames();
+
+    console.log("ALL GAMES LOGGED ARE SHOWING");
+    res.render("index.ejs", {
+        games: currentGamesLogged
+    })
+
 })
-app.get("/my-games", (req, res) => {
-    res.render("my-games.ejs");
+
+app.post("/add", async (req, res) => {
+    let gameName = req.body.gameName;
+    let gameRating = req.body.rating;
+    let gameUrl = req.body.gameUrl;
+    let gameText = req.body.textReview;
+
+    console.log("gameName = ", gameName, ", gameRating = ", gameRating, ", game review = ", gameText, "game url = ", gameUrl);
+    try {
+        await db.query("INSERT INTO video_game_reviews (game_name, rating, review_text, game_cover) VALUES ($1,$2,$3,$4)", [gameName, gameRating, gameText, gameUrl])
+        res.redirect("/")
+    } catch (err) {
+        console.log(err)
+    }
+
 })
-app.get("/log-a-game", (req, res) => {
-    res.render("log-a-game.ejs");
-})
-app.get("/game-news", (req, res) => {
-    res.render("game-news.ejs");
-})
-app.get("/signup", (req, res) => {
-    res.render("signup.ejs");
-})
-app.get("/home_logged_in", (req, res) => {
-    res.render("home_logged_in.ejs", {
-        user: username
-    });
-})
-app.post("/home_logged_in", (req, res) => {
-    console.log("typed in username = ", username);
-    res.render("home_logged_in.ejs", {
-        user: username
-    });
-})
+
+
+
+app.post("/edit", async (req, res) => {
+    const { editItem, gameId } = req.body;
+
+    if (!editItem) {
+        console.log("Error: No review provided");
+        return res.status(400).send("Error: No review provided");
+    }
+    try {
+        // TODO: Update the database with the new review
+        console.log("Updated review:", editItem);
+        console.log("Associated ID of the game: ", gameId);
+
+        await db.query("UPDATE video_game_reviews SET review_text = ($1) WHERE id = $2", [editItem, gameId]);
+    } catch (err) {
+        console.log(err)
+    }
+
+    res.redirect("/");
+});
+
+
+app.post("/delete", async(req, res) => {
+    const { editItem, gameId } = req.body;
+try{
+    await db.query("DELETE FROM video_game_reviews WHERE id = $1", [gameId]);
+    res.redirect("/");
+}catch(err){
+    console.log(err);
+}
+});
+
 const getAccessToken = async () => {
     try {
         const response = await axios.post(
@@ -61,7 +102,7 @@ const getAccessToken = async () => {
             {
                 params: {
                     client_id: 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    client_secret: 'v6pyswcvnm519qqoy3z2s7b0ghz02i',
+                    client_secret: 'qq5lmh5bhhpxb382xprmam3p2ihzkx',
                     grant_type: 'client_credentials'
                 }
             })
@@ -70,83 +111,65 @@ const getAccessToken = async () => {
         console.error("Error fetching token: ", error.response?.data || error.message);
     }
 }
-app.post("/add", async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    try {
-        await db.query("INSERT INTO users (username,password) VALUES ($1,$2)", [username, password]);
-        res.redirect('/')
-    } catch (err) {
-        console.log(err)
-    }
 
-})
-/*THIS IS WHERE YOU LEFTED OFF. YOU MADE A APP.POST TO RETRIEVE THE USER'S CREDENTIALS FROM index.ejs file. Next, youd like to make sure that whatever profile the user enters, it will log them into their file and display that in the header. (On the top far right if possible but if not, you can do that later) */
-app.post("/log-in", async (req, res) => {
-    const { username, password } = req.body;
-    
-    console.log('Received Body:', req.body);
-    try {
-        const result = await db.query("SELECT * FROM users WHERE username = $1", [username]);
-        console.log("result = ", result)
-        if (result.rows.length === 0 || result.rows[0].password !== password) {
-            return res.status(401).json({ success: false, message: "Invalid username or password." });
-        }
-        const user = result.rows[0];
-        console.log("user = ", user)
-        return res.json({ success: true, username: user.username });
-    } catch (err) {
-        console.error("Error during login: ", err.message);
-        return res.status(500).json({ success: false, message: "An error occurred. Please try again." });
-    }
-});
-app.post("/get-games", async (req, res) => {
+
+
+//Route to access external API for game data
+app.get("/api/games", async (req, res) => {
     const getToken = await getAccessToken();
-    const gameName = req.body.gameName;
-    const retrievedGames = [];
 
     if (!getToken) {
         return res.status(500).send('Unable to fetch access token.');
     }
-
     try {
-        const response = await axios.post('https://api.igdb.com/v4/games',
-            `fields name,rating, total_rating; search "${gameName}";`,
-            {
-                headers: {
-                    'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
-                    Authorization: `Bearer ${getToken}`
-                }
-            }
-        );
-
-        const data = response.data;
-
-        console.log("Number of entries: ", data.length, ", Data: ", data)
-
-
-        data.forEach(el => {
-            retrievedGames.push(el.name);
-        })
-
-        res.render("results.ejs", {
-            gameOptions: retrievedGames,
-        })
-
-
-
+        const apiResponse = await fetch("https://api.igdb.com/v4/games", {
+            method: "POST", // IGDB requires POST requests
+            headers: {
+                "Client-ID": 't4qpnrtaj5033n4aky50zbbdjvoo79',
+                Authorization: `Bearer ${getToken}`,
+                "Content-Type": "text/plain" // IGDB requires plain text, not JSON
+            },
+            body: `fields name, rating, total_rating, cover.*; search "${req.query.search}";` // This must be a raw string
+        });
+        if (!apiResponse.ok) {
+            throw new Error("Failed to fetch from API");
+        }
+        const data = await apiResponse.json();
+        res.json(data)
     } catch (error) {
-        console.error('Error fetching data from IGDB:', error.response?.data || error.message);
-        res.status(500).send('Error fetching data from IGDB.');
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
+/*
+async function getGameCover(gameName) {
+    const getToken = await getAccessToken();
 
+    const response = await fetch('https://api.igdb.com/v4/covers', {
+        method: 'POST',
+        headers: {
+            'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
+            Authorization: `Bearer ${getToken}`
+        },
+        body: JSON.stringify(`fields name, cover.image_id; search "${gameName}";`),
+    });
 
+    const games = await response.json();
 
+    if (games.length > 0 && games[0].cover) {
+        const coverImageId = games[0].cover.image_id;
+        const imageUrl = `https://images.igdb.com/igdb/image/upload/t_cover_big/${coverImageId}.jpg`;
+        console.log(`Game: ${games[0].name}`);
+        console.log(`Cover URL: ${imageUrl}`);
+    } else {
+        console.log('No cover found for this game.');
+    }
+}
+*/
 
-
-
+// Example usage
+//getGameCover('Call of Duty');
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

@@ -1,33 +1,5 @@
-const modal = document.getElementById('modal');
-const modal2 = document.getElementById('modal2');
-const modal3 = document.getElementById('modal3');
-const formElement = modal3.querySelector('form'); // Ensure you're targeting the <form> inside the modal
 
-const openModalButton = document.getElementById('openModal');
-const closeModalButton = document.getElementById('closeModal');
-const modalForm = document.getElementById('modalForm');
-const errorMessage = document.getElementById('error-message'); // Add an element to show errors
-
-//Functions
-
-
-
-
-
-
-// Function to open a modal
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'flex';
-    } else {
-        console.error(`Modal with ID "${modalId}" not found.`);
-    }
-}
-
-
-
-// Wait for the DOM to fully load
+// Modal Logic
 document.addEventListener('DOMContentLoaded', () => {
     // Select all buttons with the `data-modal-id` attribute
     const modalButtons = document.querySelectorAll('[data-modal-id]');
@@ -47,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
 
             document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
-            
+
             const modalId = button.getAttribute('data-modal-id');
             openModal(modalId);
         });
@@ -74,50 +46,268 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+const cache = new Map();
 
-/*------------------------------------------------------*/
+// Debounce function to limit API calls
+function debounce(func, delay) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), delay);
+    };
+}
 
 
-
-formElement.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent default form submission
-
-    const formData = new FormData(formElement);
-    console.log("formData = ", formData)
-    const formObject = Object.fromEntries(formData.entries());
-    console.log('Form Object:', formObject);
+//Fetch games from API
+async function fetchGames(query) {
+    if (cache.has(query)) return cache.get(query); // Use cached results if available
 
     try {
-        const response = await axios.post('/log-in', formObject, {
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        //console.log("response = ", response);
-        //console.log("response.data = ", response.data);
-        //console.log("response.data.success = ", response.data.success); //its true
-
-        if (response.data.success) {
-            errorMessage.style.display = 'none'; // Hide error message
-            modal.style.display = 'none'; // Close the modal on success
-            window.location.href = '/my-games'; // Redirect to the desired page
-        } else {
-            // Display the error message and keep the modal open
-            errorMessage.textContent = response.data.message;
-            errorMessage.style.display = 'block';
-        }
-        let data = JSON.parse("invalid JSON");
+        const response = await fetch(`/api/games?search=${query}`);
+        const data = await response.json();
+        cache.set(query, data); // Store result in cache
+        return data;
     } catch (error) {
-        if (error.response) {
-            // Display error message from the server
-            errorMessage.textContent = error.response.data.message || 'Invalid username or password.';
-        } else {
-            // Handle other errors (e.g., network issues)
-            console.log("Error message:", error.message); // Human-readable error message
-            console.log("Error name:", error.name);       // Type of error
-            console.log("Stack trace:", error.stack);     // Call stack for debugging
+        console.error("Error fetching games:", error);
+        return [];
+    }
+}
 
-            errorMessage.textContent = 'An error occurred. Please try again.';
+//fetch game covers https://api.igdb.com/v4/covers
+/*
+async function fetchGameCovers(query) {
+    if (cache.has(query)) return cache.get(query); // Use cached results if available
+
+    try {
+        const response = await fetch(`/api/games?search=${query}`);
+        const data = await response.json();
+        console.log("data = ", data)
+        cache.set(query, data); // Store result in cache
+        return data;
+    } catch (error) {
+        console.error("Error fetching games:", error);
+        return [];
+    }
+}
+*/
+
+
+//Function to handle user input (autocomplete) (step3)
+async function handleInput(event) {
+    const query = event.target.value.trim();
+    if (!query) {
+        document.getElementById("autocompleteResults").innerHTML = ""; // Clear results if input is empty
+        return;
+    }
+    const results = await fetchGames(query.toLowerCase());
+    //results[0].cover['url']
+    console.log("before displayResults: resulsts = ", results[0].cover['url'])
+    console.log("results = ", results)
+    displayResults(results);
+    console.log("results = ", results)
+}
+
+
+///Wrap `handleInput` inside `debounce` (300ms delay) (step2)
+const debouncedHandleInput = debounce(handleInput, 300);
+
+//Add event listener to the input field (step1)
+document.getElementById("gameInput").addEventListener("input", debouncedHandleInput);
+
+//Function to display results (step4)
+function displayResults(results) {
+    console.log("results in displayResults = ", results[0].cover['url'])
+    const resultsContainer = document.getElementById("autocompleteResults");
+    resultsContainer.innerHTML = results
+        .slice(0, 10) // Show only top 10
+        .map(game => game.cover ? `
+            <div class="autocomplete-item" data-name="${game.name}" data-url="${game.cover ? game.cover.url : ''}">
+                <p class="autoComp-p">${game.name}</p>
+                <img class="autoComp-img" src="${game.cover['url']}">
+            </div>`
+            :
+            `<div class="autocomplete-item" data-name="${game.name}" data-url="${game.cover ? game.cover.url : ''}">
+                <p class="autoComp-p">${game.name}</p>
+             </div>`)
+        .join("");
+
+
+
+
+    // Event delegation: Listen for clicks inside resultsContainer
+    resultsContainer.addEventListener("click", function (event) {
+        const item = event.target.closest(".autocomplete-item"); // Ensure the click is on an autocomplete item
+
+        if (item) {
+            let selectedGame = item.getAttribute("data-name");
+            let selectedUrl = item.getAttribute("data-url");
+
+            document.getElementById("gameInput").value = selectedGame;
+            document.getElementById("gameUrl").value = selectedUrl;
+            console.log("games url = ", selectedUrl)
+
+
+            // Display selected game in input field (optional)
+            gameInput.value = selectedGame;
+
+            resultsContainer.innerHTML = ""; // Hide dropdown after selection
         }
-        errorMessage.style.display = 'block'; // Show the error message
+    });
+}
+
+
+function updateGame(event) {
+    event.preventDefault();
+    console.log("you clicked!")
+}
+
+
+
+
+
+const getGameView = document.getElementById("viewGameModal");
+
+//show.bs.modal DOES whatever code needed before modal is shown.
+
+/*
+
+if(getGameView){
+    document.addEventListener('show.bs.modal', event => {
+        const btn = event.relatedTarget;
+        
+        const gameReview = btn.getAttribute("data-bs-review");
+        const gameRating = btn.getAttribute("data-bs-rating")
+
+        const getGameReviewOfModal = getGameView.querySelector("#game-review");
+        const getGameRatingOfModal = getGameView.querySelector("#game-rating")
+
+        getGameReviewOfModal.textContent = `${gameReview}`;
+        getGameRatingOfModal.textContent = `${gameRating}/5`;
+    })
+    console.log("getGameView =", getGameView)
+}
+*/
+
+
+
+
+/*
+const getGameViewModal = document.getElementById("viewGameModal");
+
+if (getGameViewModal) {
+    getGameViewModal.addEventListener("show.bs.modal", (event) => {
+        const btn = event.relatedTarget;
+
+        //Retrieve user's game review and show on the modal
+        getGameViewModal.querySelector("#game-review").textContent = userGameReviewInput;
+
+        //In the index.ejs file for the edit button of the modal, fill the hidden input's value to the user's inputted game review so it can be used to send data to the backend for the POST request
+        getGameViewModal.querySelector("#editItem").value = userGameReviewInput;
+    })
+
+}
+*/
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("viewGameModal");
+
+    if (modal) {
+        modal.addEventListener("show.bs.modal", (event) => {
+            const btn = event.relatedTarget;
+            const gameReviewDiv = modal.querySelector("#game-review");
+            //get textarea input
+            const editGameReviewInput = modal.querySelector("#edit-game-review");
+            const editItemInput = modal.querySelector("#editItem");
+            const captureGameId = modal.querySelector("#gameId");
+
+            const editBtn = modal.querySelector("#editBtn");
+            const saveBtn = modal.querySelector("#saveBtn");
+            const cancelBtn = modal.querySelector("#cancelBtn");
+            const delBtn = modal.querySelector("#deleteBtn")
+
+            // Retrieve review from the clicked game card
+            const gameReview = btn.getAttribute("data-bs-review");
+
+            // Retrieve game id from the clicked game card
+            const gameId = btn.getAttribute("data-bs-id");
+
+            // Populate modal fields
+            gameReviewDiv.textContent = gameReview;
+            editGameReviewInput.value = gameReview;
+            captureGameId.value = gameId;
+
+            // Show edit button, hide save/cancel initially
+            editBtn.style.display = "inline-block";
+            saveBtn.style.display = "none";
+            cancelBtn.style.display = "none";
+            editGameReviewInput.style.display = "none";
+
+            // Handle Edit Button Click
+            editBtn.addEventListener("click", () => {
+                gameReviewDiv.style.display = "none";
+                editGameReviewInput.style.display = "block";
+                editBtn.style.display = "none";
+                saveBtn.style.display = "inline-block";
+                cancelBtn.style.display = "inline-block";
+                delBtn.style.display = "none";
+            });
+
+            // Handle Cancel Button Click
+            cancelBtn.addEventListener("click", () => {
+                gameReviewDiv.style.display = "block";
+                editGameReviewInput.style.display = "none";
+                editBtn.style.display = "inline-block";
+                saveBtn.style.display = "none";
+                cancelBtn.style.display = "none";
+                delBtn.style.display = "inline-block";
+            });
+
+            // Handle Save Button Click
+            saveBtn.addEventListener("click", () => {
+                const updatedReview = editGameReviewInput.value;
+                editItemInput.value = updatedReview;
+                captureGameId.value = captureGameId.value;
+                // Submit form to the backend
+                document.getElementById("editForm").submit();
+            });
+
+            //Handle Delete Button Click
+            delBtn.addEventListener("click", () => {
+                document.getElementById("deleteGameRevEntry").submit();
+            })
+        });
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// window.onbeforeunload = () => true;
+
+
+
+
+
+
+
+
