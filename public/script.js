@@ -219,6 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const editGameReviewInput = modal.querySelector("#edit-game-review");
             const editItemInput = modal.querySelector("#editItem");
             const captureGameId = modal.querySelector("#gameId");
+            const gameRatingDiv = modal.querySelector("#game-rating");
 
             const editBtn = modal.querySelector("#editBtn");
             const saveBtn = modal.querySelector("#saveBtn");
@@ -231,10 +232,15 @@ document.addEventListener("DOMContentLoaded", () => {
             // Retrieve game id from the clicked game card
             const gameId = btn.getAttribute("data-bs-id");
 
+            //Retrieve game rating from the clicked game card
+            const gameRating = btn.getAttribute("data-bs-rating");
+    
+
             // Populate modal fields
             gameReviewDiv.textContent = gameReview;
             editGameReviewInput.value = gameReview;
             captureGameId.value = gameId;
+            gameRatingDiv.innerHTML = `${gameRating}/5`
 
             // Show edit button, hide save/cancel initially
             editBtn.style.display = "inline-block";

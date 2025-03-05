@@ -6,6 +6,7 @@
 
 html {
   font-size: 16px;
+  
 }
 
 .grid-container {
@@ -16,8 +17,8 @@ html {
     "header header header header header header header header header header header header"
     "main main main main main main main main main main main main"
     "footer footer footer footer footer footer footer footer footer footer footer footer";
-  height: 100%;
-}
+    height:100vh;
+} 
 
 body{
   display: grid;
@@ -53,6 +54,8 @@ main h1 {
 
 footer {
   grid-row: 3;
+  bottom:0;
+  position:sticky;
   grid-area: footer;
   font-size: 11px;
   border:5px solid lightblue;
@@ -357,19 +360,20 @@ footer {
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:30px;
+  padding:27px;
 }
 
 #game-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background: #f4f4f4;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  
+  height:100%;
 }
 
 #game-card #game-review{
@@ -414,11 +418,11 @@ footer {
 }
 
 #game-review{
-  border:1px solid black;
   width:100%;
   height:100%;
   padding:50px;
   margin:auto;
   margin-bottom:20px;
+  font-size:1.2rem;
 }
 
