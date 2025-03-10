@@ -46,7 +46,7 @@
                     type="text"
                     id="gameInput"
                     name="gameName"
-                    class="autocomplete-list"
+                    class="autocomplete-list form-control"
                     placeholder="Search for a game..."
                     autocomplete="off"
                   />
@@ -109,9 +109,10 @@
           <% games.forEach( game => { %>
           <a
             data-bs-id="<%= game.id %>"
-            data-bs-rating="<%= game.rating %>"
-            data-bs-review="<%= game.review_text %>"
-            data-bs-toggle="modal"
+            data-bs-rating = "<%= game.rating %>"
+            data-bs-review = "<%= game.review_text %>"
+            data-bs-coverUrl = "<%= game.game_cover %>"
+            data-bs-toggle = "modal"
             data-bs-target="#viewGameModal"
           >
             <div id="game-card">

@@ -1,5 +1,5 @@
 
-// Modal Logic
+//Modal Logic
 document.addEventListener('DOMContentLoaded', () => {
     // Select all buttons with the `data-modal-id` attribute
     const modalButtons = document.querySelectorAll('[data-modal-id]');
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const cache = new Map();
 
-// Debounce function to limit API calls
+//Debounce function to limit API calls
 function debounce(func, delay) {
     let timeout;
     return (...args) => {
@@ -56,7 +56,6 @@ function debounce(func, delay) {
         timeout = setTimeout(() => func(...args), delay);
     };
 }
-
 
 //Fetch games from API
 async function fetchGames(query) {
@@ -91,7 +90,6 @@ async function fetchGameCovers(query) {
 }
 */
 
-
 //Function to handle user input (autocomplete) (step3)
 async function handleInput(event) {
     const query = event.target.value.trim();
@@ -101,12 +99,11 @@ async function handleInput(event) {
     }
     const results = await fetchGames(query.toLowerCase());
     //results[0].cover['url']
-    console.log("before displayResults: resulsts = ", results[0].cover['url'])
+    console.log("before displayResults: results = ", results[0].cover['url'])
     console.log("results = ", results)
     displayResults(results);
     console.log("results = ", results)
 }
-
 
 ///Wrap `handleInput` inside `debounce` (300ms delay) (step2)
 const debouncedHandleInput = debounce(handleInput, 300);
@@ -123,7 +120,7 @@ function displayResults(results) {
         .map(game => game.cover ? `
             <div class="autocomplete-item" data-name="${game.name}" data-url="${game.cover ? game.cover.url : ''}">
                 <p class="autoComp-p">${game.name}</p>
-                <img class="autoComp-img" src="${game.cover['url']}">
+                <img class="autoComp-img" src="${game.cover['url'].replace(/\/t_logo_med\//,"/t_cover_small/")}">
             </div>`
             :
             `<div class="autocomplete-item" data-name="${game.name}" data-url="${game.cover ? game.cover.url : ''}">
@@ -155,58 +152,13 @@ function displayResults(results) {
     });
 }
 
-
 function updateGame(event) {
     event.preventDefault();
     console.log("you clicked!")
 }
 
-
-
-
-
 const getGameView = document.getElementById("viewGameModal");
 
-//show.bs.modal DOES whatever code needed before modal is shown.
-
-/*
-
-if(getGameView){
-    document.addEventListener('show.bs.modal', event => {
-        const btn = event.relatedTarget;
-        
-        const gameReview = btn.getAttribute("data-bs-review");
-        const gameRating = btn.getAttribute("data-bs-rating")
-
-        const getGameReviewOfModal = getGameView.querySelector("#game-review");
-        const getGameRatingOfModal = getGameView.querySelector("#game-rating")
-
-        getGameReviewOfModal.textContent = `${gameReview}`;
-        getGameRatingOfModal.textContent = `${gameRating}/5`;
-    })
-    console.log("getGameView =", getGameView)
-}
-*/
-
-
-
-
-/*
-const getGameViewModal = document.getElementById("viewGameModal");
-
-if (getGameViewModal) {
-    getGameViewModal.addEventListener("show.bs.modal", (event) => {
-        const btn = event.relatedTarget;
-
-        //Retrieve user's game review and show on the modal
-        getGameViewModal.querySelector("#game-review").textContent = userGameReviewInput;
-
-        //In the index.ejs file for the edit button of the modal, fill the hidden input's value to the user's inputted game review so it can be used to send data to the backend for the POST request
-        getGameViewModal.querySelector("#editItem").value = userGameReviewInput;
-    })
-
-}
-*/
 
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("viewGameModal");
@@ -234,6 +186,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             //Retrieve game rating from the clicked game card
             const gameRating = btn.getAttribute("data-bs-rating");
+
+            //Retrieve game cover iamge URL from the clicked game card
+            const gameCoverUrl = btn.getAttribute("data-bs-coverUrl");
+
+            console.log("game cover URL = ", gameCoverUrl)
     
 
             // Populate modal fields
@@ -284,28 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // window.onbeforeunload = () => true;

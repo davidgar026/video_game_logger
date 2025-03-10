@@ -34,7 +34,6 @@ async function loggedGames() {
     return gamesLogged;
 }
 
-
 app.get("/", async (req, res) => {
     const currentGamesLogged = await loggedGames();
 
@@ -48,7 +47,7 @@ app.get("/", async (req, res) => {
 app.post("/add", async (req, res) => {
     let gameName = req.body.gameName;
     let gameRating = req.body.rating;
-    let gameUrl = req.body.gameUrl;
+    let gameUrl = req.body.gameUrl.replace(/\/t_thumb\//,"/t_cover_big/");;
     let gameText = req.body.textReview;
 
     console.log("gameName = ", gameName, ", gameRating = ", gameRating, ", game review = ", gameText, "game url = ", gameUrl);
@@ -60,8 +59,6 @@ app.post("/add", async (req, res) => {
     }
 
 })
-
-
 
 app.post("/edit", async (req, res) => {
     const { editItem, gameId } = req.body;
@@ -112,8 +109,6 @@ const getAccessToken = async () => {
     }
 }
 
-
-
 //Route to access external API for game data
 app.get("/api/games", async (req, res) => {
     const getToken = await getAccessToken();
@@ -129,7 +124,7 @@ app.get("/api/games", async (req, res) => {
                 Authorization: `Bearer ${getToken}`,
                 "Content-Type": "text/plain" // IGDB requires plain text, not JSON
             },
-            body: `fields name, rating, total_rating, cover.*; search "${req.query.search}";` // This must be a raw string
+            body: `fields name, rating, total_rating,screenshots.url, cover.*; search "${req.query.search}";` // This must be a raw string
         });
         if (!apiResponse.ok) {
             throw new Error("Failed to fetch from API");
@@ -142,34 +137,9 @@ app.get("/api/games", async (req, res) => {
     }
 });
 
-/*
-async function getGameCover(gameName) {
-    const getToken = await getAccessToken();
 
-    const response = await fetch('https://api.igdb.com/v4/covers', {
-        method: 'POST',
-        headers: {
-            'Client-ID': 't4qpnrtaj5033n4aky50zbbdjvoo79',
-            Authorization: `Bearer ${getToken}`
-        },
-        body: JSON.stringify(`fields name, cover.image_id; search "${gameName}";`),
-    });
 
-    const games = await response.json();
 
-    if (games.length > 0 && games[0].cover) {
-        const coverImageId = games[0].cover.image_id;
-        const imageUrl = `https://images.igdb.com/igdb/image/upload/t_cover_big/${coverImageId}.jpg`;
-        console.log(`Game: ${games[0].name}`);
-        console.log(`Cover URL: ${imageUrl}`);
-    } else {
-        console.log('No cover found for this game.');
-    }
-}
-*/
-
-// Example usage
-//getGameCover('Call of Duty');
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

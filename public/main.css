@@ -148,7 +148,6 @@ footer {
 
 #modalForm #gameInput{
   width:100%;
-  
 }
 
 #openModal {
@@ -329,7 +328,6 @@ footer {
 .autocomplete-list{
   padding:unset;
   margin:unset;
-  
 }
 
 #autocompleteResults {
@@ -338,14 +336,27 @@ footer {
 }
 
 .autocomplete-item {
-  padding: 4px;
+  padding: 15px;
   cursor: pointer;
-  border:1px solid #ccc;
   border-top:unset;
   text-align:left;
   display:flex;
-  justify-content:space-evenly;
+  
+  justify-content:flex-end;
 }
+
+.autocomplete-item img{
+}
+
+.autocomplete-item p{
+  width:100%;
+  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+
 
 
 .autocomplete-item:hover {
@@ -424,5 +435,10 @@ footer {
   margin:auto;
   margin-bottom:20px;
   font-size:1.2rem;
+}
+
+#game-card > img{
+  width:100%;
+  padding:39px;
 }
 
