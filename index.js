@@ -10,13 +10,17 @@ const app = express();
 
 const db = new pg.Client({
     user: "postgres",
-    host: "localhost",
-    database: "video_game_logger",
-    password: "pimpin",
-    port: 5432,
+    host: "yamanote.proxy.rlwy.net", // Replace with Railway's host
+    database: "railway", // Use Railway's database name
+    password: "nkkOhpwUVpgPPpxmbrXoDEGtiDXEiTyr", // Use Railway's password
+    port: 25645, // Use Railway's port
+    ssl: {
+        rejectUnauthorized: false, // Required for Railway
+    },
 });
 
 db.connect();
+export default db;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }))
