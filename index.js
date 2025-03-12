@@ -20,7 +20,6 @@ const db = new pg.Client({
 });
 
 db.connect();
-export default db;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }))
