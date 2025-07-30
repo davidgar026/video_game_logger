@@ -2,21 +2,32 @@ import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
 import pg from "pg";
+import dotenv from "dotenv";
 import path from 'path';
 import fetch from "node-fetch"; // Make sure you have `node-fetch` installed
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
+dotenv.config();
+
+// const db = new pg.Client({
+//     user: "postgres",
+//     host: "localhost", // Replace with Railway's host
+//     database: "video_game_logger", // Use Railway's database name
+//     password: "pimpin", // Use Railway's password
+//     port: 5432, // Use Railway's port
+// });
 
 const db = new pg.Client({
-    user: "postgres",
-    host: "localhost", // Replace with Railway's host
-    database: "video_game_logger", // Use Railway's database name
-    password: "pimpin", // Use Railway's password
-    port: 5432, // Use Railway's port
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false, //Required by Railway
+    }
 });
-
-db.connect();
+console.log("🔍 DATABASE_URL =======> ", process.env.DATABASE_URL);
+db.connect()
+  .then(() => console.log("✅ Connected to Railway DB"))
+  .catch((err) => console.error("❌ DB connection error:", err));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -139,8 +150,6 @@ app.get("/api/games", async (req, res) => {
 
 
 
-
-
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-})
+  console.log(`Server running on port ${port}`);
+});
