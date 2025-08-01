@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"));
 
 
-
+//Capture all game data from database
 async function loggedGames() {
     const result = await db.query("SELECT * FROM video_game_reviews");
     const games = result.rows;
@@ -56,6 +56,7 @@ app.get("/", async (req, res) => {
 })
 
 app.post("/add", async (req, res) => {
+    console.log("req.bod = ", req.body);
     let gameName = req.body.gameName;
     let gameRating = req.body.rating;
     let gameUrl = req.body.gameUrl.replace(/\/t_thumb\//,"/t_cover_big/");;
@@ -72,8 +73,8 @@ app.post("/add", async (req, res) => {
 })
 
 app.post("/edit", async (req, res) => {
+    console.log("req.bod = ", req.body);
     const { editItem, gameId } = req.body;
-
     if (!editItem) {
         console.log("Error: No review provided");
         return res.status(400).send("Error: No review provided");
@@ -93,7 +94,8 @@ app.post("/edit", async (req, res) => {
 
 
 app.post("/delete", async(req, res) => {
-    const { editItem, gameId } = req.body;
+    console.log("this is the delete route. req.bod = ", req.body);
+    const { gameId } = req.body;
 try{
     await db.query("DELETE FROM video_game_reviews WHERE id = $1", [gameId]);
     res.redirect("/");

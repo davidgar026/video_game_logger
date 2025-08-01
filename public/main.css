@@ -98,6 +98,10 @@ footer {
   justify-content: center;
 }
 
+ .hidden-submit {
+        display: none;
+    }
+
 
 /*rating*/
 

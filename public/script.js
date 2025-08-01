@@ -72,24 +72,6 @@ async function fetchGames(query) {
     }
 }
 
-//fetch game covers https://api.igdb.com/v4/covers
-/*
-async function fetchGameCovers(query) {
-    if (cache.has(query)) return cache.get(query); // Use cached results if available
-
-    try {
-        const response = await fetch(`/api/games?search=${query}`);
-        const data = await response.json();
-        console.log("data = ", data)
-        cache.set(query, data); // Store result in cache
-        return data;
-    } catch (error) {
-        console.error("Error fetching games:", error);
-        return [];
-    }
-}
-*/
-
 //Function to handle user input (autocomplete) (step3)
 async function handleInput(event) {
     const query = event.target.value.trim();
@@ -167,10 +149,13 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.addEventListener("show.bs.modal", (event) => {
             const btn = event.relatedTarget;
             const gameReviewDiv = modal.querySelector("#game-review");
+            
             //get textarea input
             const editGameReviewInput = modal.querySelector("#edit-game-review");
             const editItemInput = modal.querySelector("#editItem");
+            const editItemInput1 = modal.querySelector("#editItem1");
             const captureGameId = modal.querySelector("#gameId");
+            const captureGameId1 = modal.querySelector("#gameId1");
             const gameRatingDiv = modal.querySelector("#game-rating");
 
             const editBtn = modal.querySelector("#editBtn");
@@ -227,9 +212,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Handle Save Button Click
             saveBtn.addEventListener("click", () => {
+                   
                 const updatedReview = editGameReviewInput.value;
-                editItemInput.value = updatedReview;
-                captureGameId.value = captureGameId.value;
+                editItemInput1.value = updatedReview; //#editItem
+                captureGameId1.value = captureGameId.value; //#gameId
+
                 // Submit form to the backend
                 document.getElementById("editForm").submit();
             });

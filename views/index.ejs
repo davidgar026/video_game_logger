@@ -28,7 +28,8 @@
       <main>
         <% if(!locals.games) {%>
         <h1 id="welcome_text" class="quicksand">
-          Welcome David.<br /><br />You have no games logged yet.
+          <!-- if there's no games logged, perform the code block below -->
+          Welcome.<br /><br />You have no games logged yet.
         </h1>
 
         <!-- Log a Game Modal -->
@@ -105,7 +106,6 @@
           </div>
         </div>
         <% }else{ %>
-        <!-- if there's no games logged, perform the code block below -->
 
         <div id="games-container">
           <!-- Game Entries -->
@@ -180,8 +180,10 @@
                     <button type="submit" class="actionBtns" id="deleteBtn">
                       Delete
                     </button>
+
+                    <!-- these inputs CARRY the data from index.ejs to the backend (index.js) -->
                     <input type="hidden" id="editItem" name="editItem" />
-                  <input type="hidden" id="gameId" name="gameId" />
+                    <input type="hidden" id="gameId" name="gameId" />
                   </form>
 
                 </div> <!--end of #actionBtns -->
@@ -189,8 +191,10 @@
                 <!-- edit button -->
                  <!-- sends edited data to the backend -->
                 <form action="/edit" method="POST" id="editForm">
-                  <input type="hidden" id="editItem" name="editItem" />
-                  <input type="hidden" id="gameId" name="gameId" />
+      
+                  <!-- these inputs CARRY the data from index.ejs to the backend (index.js) -->
+                  <input type="hidden" id="editItem1" name="editItem" />
+                  <input type="hidden" id="gameId1" name="gameId" />
                 </form>
 
               </div>
